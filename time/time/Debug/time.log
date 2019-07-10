@@ -1,3 +1,0 @@
-﻿  time.cpp
-c:\users\lg\source\repos\time\time\time.cpp(7): warning C4838: 'int'에서 'SHORT'(으)로의 변환에는 축소 변환이 필요합니다.
-  time.vcxproj -> C:\Users\LG\source\repos\time\Debug\time.exe
