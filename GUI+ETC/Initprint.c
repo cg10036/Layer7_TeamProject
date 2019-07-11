@@ -38,7 +38,7 @@ void HomePrinter(void)
 	set_color(0xE); //노란색으로 색상 바꿈
 	gotoxy(63, 24); printf("made by 혁쟁이조"); //창의 밑에 부분에 made by 혁쟁이조를 출력 
 	set_color(7); //출력이 끝난 후 색상을 다시 하얀색으로 변경
-	
+
 	//==========================================================================================================
 	// 사각형 상자 UI 출력
 	
@@ -76,7 +76,7 @@ void HomePrinter(void)
 	remove_cursor(0); //커서 없애기
 	gotoxy(24, 14);	printf("☞ 게임 시작");
 	gotoxy(24, 15); printf("   게임 설명");
-	//gotoxy(24, 16); printf("   끝내기");
+	gotoxy(24, 16); printf("   끝내기");
 	gotoxy(22, 14); //기본적으로 손 모양 이모티콘이 게임 시작을 가리키고 있기 위해 좌표 설정 
 
 	//==========================================================================================================
@@ -88,14 +88,18 @@ void HomePrinter(void)
 		keyboard = getch();
 		switch (keyboard)
 		{
-		case 72:
-			gotoxy(0, 0); printf("  "); gotoxy(0,0); printf("%d", y);
-			gotoxy(24, 15); printf("  "); y--; gotoxy(24, 14); printf("☞"); flag = 0; break;
-		case 80: 
-			gotoxy(0, 0); printf("  "); gotoxy(0, 0); printf("%d", y);
-			gotoxy(24, 14); printf("  "); y++; gotoxy(24, 15); printf("☞"); flag = 1; break;
-
+			case 72: 
+				if (y <=14)continue;
+				gotoxy(24, y); printf("  "); gotoxy(24, --y); printf("☞");
+				flag =  y == 14 ? 0 : 1;
+				break;
+			case 80: 
+				if (y >=16)continue;
+				gotoxy(24, y); printf("  "); gotoxy(24, ++y); printf("☞");
+				flag = y== 15 ? 1 : 2;
+				break;
 		}
+			
 	}
 
 	if (flag == 0) //만약 게임 시작하기를 눌렀다면
@@ -113,12 +117,12 @@ void HomePrinter(void)
 		}
 		//대사
 		gotoxy(10, 4); printf("< End-to-End >는 끝말잇기 게임입니다.\n");
-		gotoxy(10, 5); printf("흥미진진한 웹 서버와의 대결!!\n");
+		gotoxy(10, 5); printf("흥미진진한 PC와의 대결!!\n");
 		gotoxy(10, 6); printf("엔터 키를 누르면 다시 메인화면으로 돌아갑니다.");
 		gotoxy(10, 7); printf("Ready start!!\n");
 		
 		gotoxy(10, 10);  printf("<End-to-End> is an end-to-end game.\n");
-		gotoxy(10, 11); printf("A battle against an exciting web server!!\n");
+		gotoxy(10, 11); printf("A battle against an exciting PC!!\n");
 		gotoxy(10, 12); printf("Press the Enter key to return to the main screen.\n");
 		gotoxy(10, 13); printf("Ready start!!\n");
 
@@ -140,7 +144,7 @@ void HomePrinter(void)
 	}
 	else
 	{
-		system("exit"); //종료 
+		exit(0); //종료 
 	}
 }
 
@@ -148,6 +152,6 @@ int main()
 {
 	system("mode con cols=80 lines=25"); //처음 크기 조정 
 	HomePrinter();
-	
+	int i = 0;
 	
 }
