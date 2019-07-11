@@ -81,15 +81,70 @@ int DownloadToBuffer(char * webpage,char * buffer,unsigned long max){
 
 int Search(char* buffer, char* _input)
 {
-	char input[22] = "|";
-	strcat(input, _input);
-	strcat(input, "|");
-	char *ptr = strstr(buffer, input);
-	if(ptr == NULL || strlen(input) <= 3 )
+	if(strlen(_input) > 1)
 	{
-		return 0;
+		char input[22] = "|";
+		strcat(input, _input);
+		strcat(input, "|");
+		char *ptr = strstr(buffer, input);
+		if(ptr == NULL)
+		{
+			return 0;
+		}
+		return 1;
 	}
-	return 1;
+	else
+	{
+		int i, j, k = 0;
+		char word[30][50] = { 0 };
+		for(i = 0;buffer[i - 1] != '[';i++)
+		{
+			
+		}
+		for(;buffer[i] != '\0';i++)
+		{
+			if(buffer[i - 5] == 'k' && buffer[i - 4] == 'u' && buffer[i - 3] == 'e' && buffer[i - 2] == 'k' && buffer[i - 1] == '|')
+			{
+				for(j = 0;buffer[i + j] != '|';j++)
+				{
+					word[k][j] = buffer[i + j];
+				}
+				word[k][j] = '\0';
+				i += j + 1;
+				for(j = 0;buffer[i + j] != '\"';j++)
+				{
+					if((buffer[i + j] >= 'A' && buffer[i + j] <= 'Z') || (buffer[i + j] >= 'a' && buffer[i + j] <= 'z'))
+					{
+						break;
+					}
+				}
+				if(buffer[i + j] == '\"' && strlen(word[k]) > 1)
+				{
+					k++;
+				}
+				else if(buffer[i] == _input[0])
+				{
+					for(j = 0;((buffer[i + j] >= 'a' && buffer[i + j] <= 'z') || (buffer[i + j] >= 'A' && buffer[i + j] <= 'Z'));j++)
+					{
+						word[k][j] = buffer[i + j];
+					}
+					word[k][j] = '\0';
+					k++;
+				}
+				else
+				{
+					for(j = 0;word[k][j] != '\0';j++)
+					{
+						word[k][j] = '\0';
+					}
+				}
+			}
+		}
+		for(i = 0;i < 30;i++)
+		{
+			printf("%s\n", word[i]);
+		}
+	}
 }
 
 int main(int argc,char *argv[]){
