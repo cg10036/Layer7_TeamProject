@@ -25,7 +25,7 @@ void remove_cursor(int num)
 }
 
 
-void InitPrint(void)
+void HomePrinter(void)
 {
 	//==========================================================================================================
 	//기초 설정 
@@ -41,13 +41,14 @@ void InitPrint(void)
 	
 	//==========================================================================================================
 	// 사각형 상자 UI 출력
+	
 	remove_cursor(0); //커서 없애기 
 	gotoxy(x, y);    //커서를 15,15로 옮김 
-	for (i = 0; i <= 8; i++) { gotoxy(x, y--); printf("|"); Sleep(30); } //올라가기
-	for (i = 0; i <=17; i++){ printf("￣"); x += 2;Sleep(30); } //→으로 가기
+	for (i = 0; i <= 8; i++) { gotoxy(x, y--); printf("|"); Sleep(20); } //올라가기
+	for (i = 0; i <=17; i++){ printf("￣"); x += 2;Sleep(20); } //→으로 가기
 	x -= 1;  //x를 1감소 
-	for (i = 0; i <= 8; i++){ gotoxy(x, ++y); printf("|"); Sleep(30); } //아래로 가기
-	for (i = 0; i < 17; i++){ x -= 2;gotoxy(x, y);printf("＿"); Sleep(30); } //→로 가기 
+	for (i = 0; i <= 8; i++){ gotoxy(x, ++y); printf("|"); Sleep(20); } //아래로 가기
+	for (i = 0; i < 17; i++){ x -= 2;gotoxy(x, y);printf("＿"); Sleep(20); } //→로 가기 
 
 	//==========================================================================================================
 	//제목과 게임 시작, 게임 설명, 게임 종료 부분
@@ -66,23 +67,34 @@ void InitPrint(void)
 		printf("%c",gameTitle[i]);
 	}
 
+	while (_kbhit()) //수혁아 이거 어떻게 해야 돼? 
+	{
+		_getch();
+	}
+
 	Sleep(200); //아래 글자가 나오기 전에 잠깐의 waiting 
 	remove_cursor(0); //커서 없애기
 	gotoxy(24, 14);	printf("☞ 게임 시작");
 	gotoxy(24, 15); printf("   게임 설명");
-	gotoxy(24, 16); printf("   게임 종료");
+	//gotoxy(24, 16); printf("   끝내기");
 	gotoxy(22, 14); //기본적으로 손 모양 이모티콘이 게임 시작을 가리키고 있기 위해 좌표 설정 
 
 	//==========================================================================================================
 	// 손모양 이모티콘 움직이기+게임 설명을 듣고 난 후 설정 
 	
+	y = 14;
 	while (keyboard != 13)
 	{
 		keyboard = getch();
 		switch (keyboard)
 		{
-			case 72: gotoxy(24, 15); printf("  "); gotoxy(24, 14); printf("☞"); flag = 0; break;
-			case 80: gotoxy(24, 14); printf("  "); gotoxy(24, 15); printf("☞"); flag = 1; break;
+		case 72:
+			gotoxy(0, 0); printf("  "); gotoxy(0,0); printf("%d", y);
+			gotoxy(24, 15); printf("  "); y--; gotoxy(24, 14); printf("☞"); flag = 0; break;
+		case 80: 
+			gotoxy(0, 0); printf("  "); gotoxy(0, 0); printf("%d", y);
+			gotoxy(24, 14); printf("  "); y++; gotoxy(24, 15); printf("☞"); flag = 1; break;
+
 		}
 	}
 
@@ -95,16 +107,20 @@ void InitPrint(void)
 		system("cls"); //화면 지우기 
 		int key=0;
 
+		for (i = 0; i < 25; i++) //시각적 요소 
+		{
+			gotoxy(3, i); printf("|");
+		}
 		//대사
-		gotoxy(10, 3); printf("< End-to-End >는 끝말잇기 게임입니다.\n");
-		gotoxy(10, 4); printf("흥미진진한 웹 서버와의 대결!!\n");
-		gotoxy(10, 5); printf("엔터 키를 누르면 다시 메인화면으로 돌아갑니다.");
-		gotoxy(10, 6); printf("Ready start!!\n");
+		gotoxy(10, 4); printf("< End-to-End >는 끝말잇기 게임입니다.\n");
+		gotoxy(10, 5); printf("흥미진진한 웹 서버와의 대결!!\n");
+		gotoxy(10, 6); printf("엔터 키를 누르면 다시 메인화면으로 돌아갑니다.");
+		gotoxy(10, 7); printf("Ready start!!\n");
 		
-		gotoxy(10, 9);  printf("<End-to-End> is an end-to-end game.\n");
-		gotoxy(10, 10); printf("A battle against an exciting web server!!\n");
-		gotoxy(10, 11); printf("Press the Enter key to return to the main screen.\n");
-		gotoxy(10, 12); printf("Ready start!!\n");
+		gotoxy(10, 10);  printf("<End-to-End> is an end-to-end game.\n");
+		gotoxy(10, 11); printf("A battle against an exciting web server!!\n");
+		gotoxy(10, 12); printf("Press the Enter key to return to the main screen.\n");
+		gotoxy(10, 13); printf("Ready start!!\n");
 
 		set_color(0xE); //노란색으로 색깔 변경
 		gotoxy(60, 24); printf("@copyright 혁쟁이조");
@@ -116,17 +132,22 @@ void InitPrint(void)
 			key = getch();
 			if (key == 13)
 			{
-				system("cls");
-				InitPrint();
+				system("cls"); //화면을 지우고 
+				Sleep(800);
+				HomePrinter();  //InitPrint() 함수를 다시 호출
 			}
 		}
+	}
+	else
+	{
+		system("exit"); //종료 
 	}
 }
 
 int main()
 {
 	system("mode con cols=80 lines=25"); //처음 크기 조정 
-	InitPrint();
+	HomePrinter();
 	
 	
 }
