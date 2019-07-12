@@ -21,7 +21,25 @@ else if($_GET['Mode'] == "Find")
 	{
 		die("KO");
 	}
-	$content = file_get_contents("http://wordfind.co.kr/start-word/".$_GET['Word']."_3.html");
+	if($_GET['Word'] !== "x" && $_GET['Word'] !== "y" && $_GET['Word'] !== "z")
+	{
+		$content = file_get_contents("http://wordfind.co.kr/start-word/".$_GET['Word']."_3.html");
+	}
+	else
+	{
+		if($_GET['Word'] == "x")
+		{
+			die("xray\nxmas\nxhosa\nxerox\nxenon\nxhosas\nsrayed\nxraying\nxanthous\n");
+		}
+		else if($_GET['Word'] == "y")
+		{
+			die("yap\nyam\nyak\nyaw\nyay\nyea\nyen\nyes\nyeti\nyummy\nyellow\nyeasty\nyucky\n");
+		}
+		else
+		{
+			die("zero\nzip\nzion\nzoom\nzoo\nzippy\nzombi\nzither\nzippy\nzombie\nzionism\n");
+		}
+	}
 	strip_tags($content);
 	$content = preg_replace("(\<(/?[^\>]+)\>)", "", $content);
 	$content = preg_replace("/[^A-Za-z|\x20]/", "", $content);
@@ -33,7 +51,7 @@ else if($_GET['Mode'] == "Find")
 	{
 		if(substr($content[$i], 0, 1) === $_GET['Word'] && strtolower($content[$i]) === $content[$i] && strlen($content[$i]) > 1)
 		{
-			echo $content[$i]."<br>";
+			echo $content[$i]."\n";
 		}
 	}
 }
