@@ -79,82 +79,99 @@ int DownloadToBuffer(char * webpage,char * buffer,unsigned long max){
 	return 0;
 }
 
-int Search(char* buffer, char* _input)
+char usedString[300][50];
+int usedStringCnt = 0;
+
+int Find(char Word, char* Dest)
 {
-	if(strlen(_input) > 1)
+	char buffer[2000], url[100] = "http://sunrin.duckdns.org/api/word.php?Mode=Find&Word=", word[200][100];
+	memset(buffer, 0, sizeof(buffer));
+	memset(word, 0, sizeof(word));
+	url[strlen(url)] = Word;
+	url[strlen(url)] = '\0';
+	DownloadToBuffer(url, buffer, sizeof(buffer));
+	int i, j = 0, k = 0;
+	for(i = 0;buffer[i] != '\0';i++)
 	{
-		char input[22] = "|";
-		strcat(input, _input);
-		strcat(input, "|");
-		char *ptr = strstr(buffer, input);
-		if(ptr == NULL)
+		if(buffer[i] == '\n')
 		{
-			return 0;
+			word[j][k] = '\0';
+			k = 0;
+			j++;
+			continue;
 		}
-		return 1;
+		word[j][k++] = buffer[i];
 	}
-	else
+	for(i = 0;i < 194;i++)
 	{
-		int i, j, k = 0;
-		char word[30][50] = { 0 };
-		for(i = 0;buffer[i - 1] != '[';i++)
+		for(j = 0;j < usedStringCnt;j++)
 		{
-			
-		}
-		for(;buffer[i] != '\0';i++)
-		{
-			if(buffer[i - 5] == 'k' && buffer[i - 4] == 'u' && buffer[i - 3] == 'e' && buffer[i - 2] == 'k' && buffer[i - 1] == '|')
+			if(!strcmp(word[i + 7], usedString[j]))
 			{
-				for(j = 0;buffer[i + j] != '|';j++)
-				{
-					word[k][j] = buffer[i + j];
-				}
-				word[k][j] = '\0';
-				i += j + 1;
-				for(j = 0;buffer[i + j] != '\"';j++)
-				{
-					if((buffer[i + j] >= 'A' && buffer[i + j] <= 'Z') || (buffer[i + j] >= 'a' && buffer[i + j] <= 'z'))
-					{
-						break;
-					}
-				}
-				if(buffer[i + j] == '\"' && strlen(word[k]) > 1)
-				{
-					k++;
-				}
-				else if(buffer[i] == _input[0])
-				{
-					for(j = 0;((buffer[i + j] >= 'a' && buffer[i + j] <= 'z') || (buffer[i + j] >= 'A' && buffer[i + j] <= 'Z'));j++)
-					{
-						word[k][j] = buffer[i + j];
-					}
-					word[k][j] = '\0';
-					k++;
-				}
-				else
-				{
-					for(j = 0;word[k][j] != '\0';j++)
-					{
-						word[k][j] = '\0';
-					}
-				}
+				break;
 			}
 		}
-		for(i = 0;i < 30;i++)
+		if(j == usedStringCnt)
 		{
-			printf("%s\n", word[i]);
+			strcpy(usedString[usedStringCnt++], word[i + 7]);
+			strcpy(Dest, word[i + 7]);
+			return 1;
 		}
 	}
+	return 0;
+}
+
+int Check(char* Check)
+{
+	char buffer[2000], url[100] = "http://sunrin.duckdns.org/api/word.php?Mode=Check&Word=", word[200][100];
+	memset(buffer, 0, sizeof(buffer));
+	memset(word, 0, sizeof(word));
+	strcat(url, Check);
+	DownloadToBuffer(url, buffer, sizeof(buffer));
+	int i, j = 0, k = 0;
+	for(i = 0;buffer[i] != '\0';i++)
+	{
+		if(buffer[i] == '\n')
+		{
+			word[j][k] = '\0';
+			k = 0;
+			j++;
+			continue;
+		}
+		word[j][k++] = buffer[i];
+	}
+	if(!strcmp(word[6], "OK"))
+	{
+		return 1; //TRUE
+	}
+	return 0; //FALSE
 }
 
 int main(int argc,char *argv[]){
-	char buffer[2000], input[20], url[110] = "http://suggest.dic.daum.net/dic_all_ctsuggest?mod=json&code=utf_in_out&enc=utf&cate=lan&q=";
-	memset(buffer,0,sizeof(buffer));
-	scanf("%s", input);
-	strcat(url, input);
-	DownloadToBuffer(url, buffer, sizeof(buffer));
-	printf("%s\n", (Search(buffer, input) == 1 ? "YES" : "NO"));
-	
-	getchar();
-	return 0;
+	char a[50], check_char = 0, b = 0, i;
+	while(1)
+	{
+		scanf("%s", a);
+		for(i = 0;i < usedStringCnt;i++)
+		{
+			if(!strcmp(a, usedString[i]))
+			{
+				b = 1;
+				break;
+			}
+		}
+		if(!Check(a) || !(check_char == '\0' || a[0] == check_char) || strlen(a) <= 1 || b)
+		{
+			printf("GAMEOVER\n");
+			return; //GAMEOVER
+		}
+		strcpy(usedString[usedStringCnt++], a);
+		if(!Find(a[strlen(a) - 1], a))
+		{
+			printf("YOUWIN\n");
+			return; //YOUWIN
+		}
+		printf("%s\n", a);
+		check_char = a[strlen(a) - 1];
+	}
 }
