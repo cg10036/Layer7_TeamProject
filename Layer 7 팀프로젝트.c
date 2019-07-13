@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<windows.h>
+#include<time.h> 
 #include<conio.h>
 
 // 128 :: 단어들 색
@@ -71,7 +72,18 @@ void title() {
 			break;
 		}
 	}
+
+	set_color(7); // 흰색으로 색상 변경
 }
+
+// 타이머 함수 
+int timer(int n) {
+	int q;
+	
+	q = clock(); // 현재 컴퓨터 시간으로 초기화
+	
+	return n - (clock() - q) / 1000; // n - q 초 반환 
+} // if (_kbhit()) 으로 수를 계속 받는다. 
 
 
 int HomePrinter(void)
@@ -92,6 +104,7 @@ int HomePrinter(void)
 	// 사각형 상자 UI 출력
 
 	remove_cursor(0); //커서 없애기 
+	set_color(7); // 색상 하얀색
 	gotoxy(x, y);    //커서를 15,15로 옮김 
 	for (i = 0; i <= 8; i++) { gotoxy(x, y--); printf("|"); Sleep(20); } //올라가기
 	for (i = 0; i <= 17; i++) { printf("￣"); x += 2; Sleep(20); } //→으로 가기
@@ -186,7 +199,7 @@ int HomePrinter(void)
 		gotoxy(10, 6); printf("엔터 키를 누르면 다시 메인화면으로 돌아갑니다.");
 		gotoxy(10, 7); printf("Ready start!!\n");
 
-		gotoxy(10, 10);  printf("<End-to-End> is an end-to-end game.\n");
+		gotoxy(10, 10);  printf("< End-to-End > is an end-to-end game.\n");
 		gotoxy(10, 11); printf("A battle against an exciting PC!!\n");
 		gotoxy(10, 12); printf("Press the Enter key to return to the main screen.\n");
 		gotoxy(10, 13); printf("Ready start!!\n");
@@ -202,7 +215,31 @@ int HomePrinter(void)
 			if (key == 13)
 			{
 				system("cls"); //화면을 지우고 
-				Sleep(800);
+				//========================================================
+
+				// 기다리는것에 지친 유저들을 위해 . . .
+
+				gotoxy(0, 0);
+				set_color(0xE); // 노란색으로 색상 전환
+				printf("로 딩 중 ○");
+				gotoxy(0, 0);
+				Sleep(200);
+				printf("로 딩 중 ◎");
+				gotoxy(0, 0);
+				Sleep(200);
+				printf("로 딩 중 ●");
+				Sleep(200);
+				gotoxy(0, 0);
+				printf("%12c", ' ');
+				gotoxy(0, 0);
+				printf("재시작 . . .");
+				Sleep(200);
+				gotoxy(0, 0);
+				printf("%13c", ' ');
+				set_color(7); // 흰색으로 색상 전환
+
+				//========================================================
+
 				HomePrinter();  //InitPrint() 함수를 다시 호출
 			}
 		}
@@ -222,4 +259,5 @@ int main()
 	title();
 
 	_getch();
+	exit(0);
 }
