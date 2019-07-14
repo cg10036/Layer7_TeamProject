@@ -7,6 +7,8 @@
 #include <oleauto.h>
 #include <conio.h>
 #include <time.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 // 0 :: 검정색 
 // 7 :: 흰색
@@ -99,8 +101,10 @@ int timer(int n)
 	return n - (clock() - q) / 1000; // n - q 초 반환 
 } // if (_kbhit()) 으로 수를 계속 받는다. 
 
-void HomePrinter(void)
+int HomePrinter(void)
 {
+	//==========================================================================================================
+	//기초 설정 
 	int i = 0; //반복에 사용할 변수 i 
 	int x = 22, y = 12;  //gotoxy 처음 좌표  
 	int keyboard = 0; //키보드 입력을 받아 enterkey를 눌렀는지 확인하는 변수 
@@ -113,19 +117,19 @@ void HomePrinter(void)
 
 	//==========================================================================================================
 	// 사각형 상자 UI 출력
-	
+
 	remove_cursor(0); //커서 없애기 
 	set_color(7); // 색상 하얀색
 	gotoxy(x, y);    //커서를 15,15로 옮김 
-	for (i = 0; i <= 8; i++){ gotoxy(x, y--); printf("|"); Sleep(20); } //올라가기
-	for (i = 0; i <=17; i++){ printf("￣"); x += 2;Sleep(20); } //→으로 가기
+	for (i = 0; i <= 8; i++) { gotoxy(x, y--); printf("|"); Sleep(20); } //올라가기
+	for (i = 0; i <= 17; i++) { printf("￣"); x += 2; Sleep(20); } //→으로 가기
 	x -= 1;  //x를 1감소 
-	for (i = 0; i <= 8; i++){ gotoxy(x, ++y); printf("|"); Sleep(20); } //아래로 가기
-	for (i = 0; i < 17; i++){ x -= 2;gotoxy(x, y);printf("＿"); Sleep(20); } //→로 가기 
+	for (i = 0; i <= 8; i++) { gotoxy(x, ++y); printf("|"); Sleep(20); } //아래로 가기
+	for (i = 0; i < 17; i++) { x -= 2; gotoxy(x, y); printf("＿"); Sleep(20); } //→로 가기 
 
 	//==========================================================================================================
 	//제목과 게임 시작, 게임 설명, 게임 종료 부분
-	gotoxy(34, 8); // 글자를 쓰기 위해 좌표를 재조정 
+	gotoxy(35, 8); // 글자를 쓰기 위해 좌표를 재조정 
 	remove_cursor(1); //커서 없애기 
 	for (i = 0; gameTitle[i] != '\0'; i++)
 	{
@@ -137,7 +141,7 @@ void HomePrinter(void)
 			set_color(7);
 			continue;
 		}
-		printf("%c",gameTitle[i]);
+		printf("%c", gameTitle[i]);
 	}
 
 	while (_kbhit()) //수혁아 이거 어떻게 해야 돼? 
@@ -147,55 +151,77 @@ void HomePrinter(void)
 
 	Sleep(200); //아래 글자가 나오기 전에 잠깐의 waiting 
 	remove_cursor(0); //커서 없애기
-	gotoxy(24, 14); printf("☞ 게임 시작");
+	gotoxy(24, 14);	printf("☞ 게임 시작");
 	gotoxy(24, 15); printf("   게임 설명");
 	gotoxy(24, 16); printf("   끝내기");
 	gotoxy(22, 14); //기본적으로 손 모양 이모티콘이 게임 시작을 가리키고 있기 위해 좌표 설정 
 
 	//==========================================================================================================
 	// 손모양 이모티콘 움직이기+게임 설명을 듣고 난 후 설정 
-	
+
 	y = 14;
 	while (keyboard != 13)
 	{
-		keyboard = getch();
+		keyboard = _getch();
 		switch (keyboard)
 		{
-			case 72: 
-				if (y <= 14)continue;
-				gotoxy(24, y); printf("  "); gotoxy(24, --y); printf("☞");
-				flag =  y == 14 ? 0 : 1;
-				break;
-			case 80: 
-				if (y >= 16)continue;
-				gotoxy(24, y); printf("  "); gotoxy(24, ++y); printf("☞");
-				flag = y== 15 ? 1 : 2;
-				break;
+		case 72:
+			if (y <= 14)continue;
+			gotoxy(24, y); printf("  "); gotoxy(24, --y); printf("☞");
+			flag = y == 14 ? 0 : 1;
+			break;
+		case 80:
+			if (y >= 16)continue;
+			gotoxy(24, y); printf("  "); gotoxy(24, ++y); printf("☞");
+			flag = y == 15 ? 1 : 2;
+			break;
 		}
-			
+
 	}
 
 	if (flag == 0) //만약 게임 시작하기를 눌렀다면
 	{
-		system("cls"); //화면 지우기
-		return; //게임 시작하기를 누르면 함수를 탈출하기 
+		return 0; //게임 시작하기를 누르면 함수를 탈출하기 
 	}
-	else if(flag==1)//만약 게임 규칙 설명을 눌렀다면 
+	else if (flag == 1)//만약 게임 규칙 설명을 눌렀다면 
 	{
 		system("cls"); //화면 지우기 
-		int key=0;
+		int key = 0;
+		
+		/*
+		set_color(110); // 노란색 테두리
+		
+		for (i = 0; i < 25; i++) //시각적 요소 
+		{
+			gotoxy(3, i); printf(" ");
+			gotoxy(2, i); printf(" ");
+		}
 
+		set_color(60); // 파란색 테두리
+
+		for (i = 0; i < 80; i++) { // 시각적 요소
+			gotoxy(i, 23); printf(" ");
+		}
+
+		set_color(90);
+		gotoxy(2, 23); printf(" ");
+		gotoxy(3, 23); printf(" ");
+		*/
+		
 		for (i = 0; i < 25; i++) //시각적 요소 
 		{
 			gotoxy(3, i); printf("|");
 		}
+
+		set_color(7); // 흰색 글씨
+
 		//대사
 		gotoxy(10, 4); printf("< End-to-End >는 끝말잇기 게임입니다.\n");
 		gotoxy(10, 5); printf("흥미진진한 PC와의 대결!!\n");
 		gotoxy(10, 6); printf("엔터 키를 누르면 다시 메인화면으로 돌아갑니다.");
 		gotoxy(10, 7); printf("Ready start!!\n");
-		
-		gotoxy(10, 10); printf("<End-to-End> is an end-to-end game.\n");
+
+		gotoxy(10, 10);  printf("< End-to-End > is an end-to-end game.\n");
 		gotoxy(10, 11); printf("A battle against an exciting PC!!\n");
 		gotoxy(10, 12); printf("Press the Enter key to return to the main screen.\n");
 		gotoxy(10, 13); printf("Ready start!!\n");
@@ -207,7 +233,7 @@ void HomePrinter(void)
 
 		while (key != 13)
 		{
-			key = getch();
+			key = _getch();
 			if (key == 13)
 			{
 				system("cls"); //화면을 지우고 
@@ -236,13 +262,13 @@ void HomePrinter(void)
 
 				//========================================================
 
-				
 				HomePrinter();  //InitPrint() 함수를 다시 호출
 			}
 		}
 	}
 	else
 	{
+		system("cls");
 		exit(0); //종료 
 	}
 }
@@ -409,12 +435,34 @@ int main(int argc,char *argv[]){
 	char a[50];
 	char check_char = 0;
 	char b = 0;
+	char *sa; // 문자열 길이 측정 
+	char *ca; // 한 글자씩 출력 
+	int t_on = 0; // 타이머 시작? 
+	int scnt; // 카운트 
+	int timer; // timer
+	int rnd; // round
+	int rtm; // com 속도 변환 
 	int q = clock();
 	int w = clock();
 	int e = clock();
+	int r = clock();
 	int m = 0, cnt = 1, i;
 	int on[2] = { 0, };
 	int count = 0;
+	
+	int x, y;
+	int cx, cy;
+	
+	x = 22;
+	y = 4;
+	
+	cx = 58;
+	cy = 6;
+	
+	scnt = 0;
+	timer = 10;
+	rnd = 1;
+	rtm = 0;
 	
 	system("mode con cols=80 lines=25"); //처음 크기 조정 
 	HomePrinter();
@@ -425,12 +473,38 @@ int main(int argc,char *argv[]){
 	w = clock();
 	e = clock();
 	//endregion
+	
 	while (1)
-	{
+	{	
 		if (_kbhit())
-		{
+		{	
+			scnt++;
 			scanf("%s", a);
+			set_color(7);
+			
+			if (timer - (clock() - r) / 1000 <= 0) {
+				gotoxy(22, 1);
+				set_color(100);
+				printf("%22c", ' ');
+				gotoxy(22, 1);
+				printf("Time Over\n");
+				set_color (7);
+				
+				Sleep(2000);
+				
+				system("cls");
+				exit(0);
+			}
+			
 			printf("\n");
+			
+			gotoxy(cx - 6, cy);
+			set_color(112);
+			for (i = 0; i < 3; i++) {
+				printf("@ ");
+				Sleep(200);
+			}
+			
 			for (i = 0;i < usedStringCnt;i++)
 			{
 				if (!strcmp(a, usedString[i]))
@@ -439,28 +513,86 @@ int main(int argc,char *argv[]){
 					break;
 				}
 			}
+			
+			gotoxy(cx - 6, cy);
+			set_color(112);
+			printf("      ");
+			
 			if (!Check(a) || !(check_char == '\0' || a[0] == check_char) || strlen(a) <= 1 || b)
 			{
-				gotoxy(35, 13);
-				set_color(124);
-				printf("GAMEOVER\n");
+				gotoxy(22, 1);
+				set_color(100);
+				printf("%22c", ' ');
+				gotoxy(22, 1);
+				printf("GAME OVER\n");
 				set_color(0);
-				break; //GAMEOVER
+				Sleep(2500);
+				system("cls");
+				exit(0); //GAMEOVER
 			}
+			else {
+				gotoxy(22, 1);
+				set_color(96);
+				printf("%22c");
+				gotoxy(22, 1);
+				printf("pass!");
+				Sleep(500);
+				gotoxy(22, 1);
+				printf("%6c", ' ');
+			}
+			
+			if (scnt == 5) {
+				gotoxy(22, 1);
+				set_color(100);
+				printf("%22c", ' ');
+				gotoxy(22, 1);
+				printf("YOU WIN\n");
+				set_color(0);
+				Sleep(2500);
+				system("cls");
+				exit(0); //YOUWIN
+			}
+			
 			strcpy(usedString[usedStringCnt++], a);
 			if (!Find(a[strlen(a) - 1], a))
 			{
-				gotoxy(35, 13);
-				set_color(114);
-				printf("YOUWIN\n");
+				gotoxy(22, 1);
+				set_color(100);
+				printf("%22c", ' ');
+				gotoxy(22, 1);
+				printf("YOU WIN\n");
 				set_color(0);
-				break; //YOUWIN
+				Sleep(2500);
+				system("cls");
+				exit(0); //YOUWIN
 			}
 			
+			sa = a;
+			ca = a;
+			
+			i = 0;
+			
 			//region Tiny-Print-Fix by leesoohyuk
-			gotoxy(22, 8);
+			for (; *sa != '\0'; sa++) i++;
+			gotoxy((cx - i), cy);
 			set_color(112);
-			printf("COM : %s\n", a);
+			//printf("%s\n", a);
+			for (; *ca != '\0'; ca++) {
+				printf("%c", *ca);
+				if (rtm < 2) {
+					Sleep(400);
+					rtm++;
+				} 
+				else if (rtm < 4) {
+					Sleep(70);
+					rtm++;
+				}
+				else Sleep(50);
+			}
+			//gotoxy(22, 4);
+			//printf("%20c", ' ');
+			y+=4;
+			cy+=4;
 			//endregion
 			check_char = a[strlen(a) - 1];
 			//region Tiny-Bug-Fix by leesoohyuk
@@ -468,29 +600,29 @@ int main(int argc,char *argv[]){
 			e = clock();
 			//endregion
 			check_char = a[strlen(a) - 1];
+			
+			t_on = 0;
+			if (timer > 7) timer-=3;
+			else timer-=2;
+		}
+		else if (t_on == 0) {
+			r = clock();
+			t_on = 1;
+			gotoxy(22, 1);
+			set_color(96);
+			printf("%d초 안에 입력하시오.", timer);
+			gotoxy(49, 1);
+			printf("round : %d", rnd);
+			rnd++;
+			gotoxy(x, y);
+			set_color(112);
+			printf("$ ");
 		}
 		else
 		{
-			gotoxy(46, 1);
-			set_color(96);
-			printf("%3d분 %3d초", m, (clock() - q) / 1000);
-	
-			if ((clock() - q) / 1000 == 60 && on[0] != 1) {
-				m++;
-				q = clock();
-				on[0] = 1;
-			}
-			else if ((clock() - q) / 1000 == 0) on[0] = 0;
-			gotoxy(21, 1);
-			set_color(100); printf("%3d", 10 - (clock() - w) / 1000);
-			//Tiny-Print-Fix by leesoohyuk
-			set_color(96); printf("초 남음\n");
-			gotoxy(22, 4);
-			set_color(112);
-			printf("input :             \b\b\b\b\b\b\b\b\b\b\b\b");
 			//endregion
-	
-			if (10 - (clock() - w) / 1000 == 0 && on[1] != 1) {
+			/*
+			if (10 - (clock() - r) / 1000 == 0 && on[1] != 1) {
 				if (cnt == 1) {
 					gotoxy(35, 13);
 					set_color(124);
@@ -507,10 +639,11 @@ int main(int argc,char *argv[]){
 					cnt++;
 					break;
 				}
-				w = clock();
+				r = clock();
 				on[1] = 1;
 			}
-			else if ((clock() - w) / 1000 == 0) on[1] = 0;
+			else if ((clock() - r) / 1000 == 0) on[1] = 0;
+			*/
 	
 			Sleep(1);
 		}
