@@ -525,8 +525,10 @@ int main(int argc,char *argv[]){
 				set_color (7);
 				
 				Sleep(2000);
-				
+				mciSendString("stop main.mp3", NULL, 0, NULL);
 				system("cls");
+				main(0,0); 
+				
 				exit(0);
 			}
 			
@@ -561,7 +563,12 @@ int main(int argc,char *argv[]){
 				printf("GAME OVER\n");
 				set_color(0);
 				Sleep(2500);
+				
+				mciSendString("stop main.mp3", NULL, 0, NULL);
 				system("cls");
+				
+				main(0,0);
+						
 				exit(0); //GAMEOVER
 			}
 			else {
@@ -583,7 +590,9 @@ int main(int argc,char *argv[]){
 				printf("YOU WIN\n");
 				set_color(0);
 				Sleep(2500);
+				mciSendString("stop main.mp3", NULL, 0, NULL);
 				system("cls");
+				main(0, 0);
 				exit(0); //YOUWIN
 			}
 			
