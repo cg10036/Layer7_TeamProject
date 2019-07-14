@@ -9,4 +9,4 @@ teamProject.Complete();
 teamProject.Stop();
 ```
 <br>
-MERGE안에 있는 파일이 FIANL입니다.
+MERGE안에 있는 파일이 FINAL입니다.
