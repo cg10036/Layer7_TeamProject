@@ -47,6 +47,62 @@ else if($_GET['Mode'] == "Find")
 	$content = substr($content, 107);
 	$content = substr($content, 0, strpos($content, " nbsp "));
 	$content = explode(" ", $content);
+	$arr = array();
+	for($i = 0;$i < count($content);$i++)
+	{
+		$ran = rand(0, count($content) - 1);
+		$b = true;
+		for($j = 0;$j < count($arr);$j++)
+		{
+			if($arr[$j] == $ran)
+			{
+				$b = false;
+			}
+		}
+		if($b == true)
+		{
+			$arr[count($arr)] = $ran;
+		}
+		else
+		{
+			$i--;
+		}
+	}
+	for($i = 0;$i < count($content);$i++)
+	{
+		#echo $content[$arr[$i]]."\n";
+		#filter start
+		if(strtolower($content[$arr[$i]]) === "vb")
+		{
+
+		}
+		else if(strtolower($content[$arr[$i]]) === "conj")
+		{
+
+		}
+		else if(strtolower($content[$arr[$i]]) === "adv")
+		{
+
+		}
+		else if(strtolower($content[$arr[$i]]) === "aid")
+		{
+
+		}
+		else if(strtolower($content[$arr[$i]]) === "adj")
+		{
+
+		}
+		else if(strtolower($content[$arr[$i]]) === "dildo")
+		{
+
+		}
+		#filter end
+		else if(substr($content[$arr[$i]], 0, 1) == $_GET['Word'] && strtolower($content[$arr[$i]]) == $content[$arr[$i]] && strlen($content[$arr[$i]]) > 1)
+		{
+			echo $content[$arr[$i]]."\n";
+		}
+	}
+	/*
 	for($i = 0;$i < count($content);$i++)
 	{
 		if(substr($content[$i], 0, 1) === $_GET['Word'] && strtolower($content[$i]) === $content[$i] && strlen($content[$i]) > 1)
@@ -54,9 +110,11 @@ else if($_GET['Mode'] == "Find")
 			echo $content[$i]."\n";
 		}
 	}
+	 */
 }
 else
 {
 	die("Unknown Mode");
 }
 ?>
+
