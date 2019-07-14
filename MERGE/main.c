@@ -13,7 +13,8 @@
 // 96 :: 타이머 배경, 검정색 
 // 100 :: 타이머 배경, 빨간색 
 // 109 :: 타이머 색
-// 114 :: 회색 배경, 초록색 
+// 114 :: 회색 배경, 초록색 방 
+// 120 :: 채팅 
 // 124 :: 회색 배경, 빨간색 
 // 128 :: 단어들 색
 
@@ -444,7 +445,7 @@ int main(int argc,char *argv[]){
 				set_color(124);
 				printf("GAMEOVER\n");
 				set_color(0);
-				return; //GAMEOVER
+				break; //GAMEOVER
 			}
 			strcpy(usedString[usedStringCnt++], a);
 			if (!Find(a[strlen(a) - 1], a))
@@ -453,7 +454,7 @@ int main(int argc,char *argv[]){
 				set_color(114);
 				printf("YOUWIN\n");
 				set_color(0);
-				return; //YOUWIN
+				break; //YOUWIN
 			}
 			
 			//region Tiny-Print-Fix by leesoohyuk
