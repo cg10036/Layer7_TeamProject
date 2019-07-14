@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <winsock2.h>
 #include <windows.h>
-#include <strings.h> 
-#include <wtypes.h>
-#include <ctype.h>
-#include <oleauto.h>
 #include <conio.h>
 #include <time.h>
 #include <mmsystem.h>
@@ -22,6 +18,43 @@
 
 char usedString[300][50];
 int usedStringCnt = 0;
+
+void soundplayer(int mode, int flag)
+{
+	switch(mode)
+	{
+		case 1:
+			if(flag)
+			{
+				mciSendString("play main.mp3", NULL, 0, NULL);
+			}
+			else
+			{
+				mciSendString("stop main.mp3", NULL, 0, NULL);
+			}
+			break;
+		case 2:
+			if(flag)
+			{
+				if(rand() % 2)
+				{
+					mciSendString("play bye1.mp3", NULL, 0, NULL);
+				}
+				else
+				{
+					mciSendString("play bye2.mp3", NULL, 0, NULL);
+				}
+			}
+			else
+			{
+				mciSendString("stop bye1.mp3", NULL, 0, NULL);
+				mciSendString("stop bye2.mp3", NULL, 0, NULL);
+			}
+			break;
+		default:
+			break;
+	}
+}
 
 void gotoxy(int x, int y)
 {
@@ -181,6 +214,7 @@ int HomePrinter(void)
 
 	if (flag == 0) //만약 게임 시작하기를 눌렀다면
 	{
+		soundplayer(1, 1);
 		return 0; //게임 시작하기를 누르면 함수를 탈출하기 
 	}
 	else if (flag == 1)//만약 게임 규칙 설명을 눌렀다면 
@@ -196,13 +230,10 @@ int HomePrinter(void)
 			gotoxy(3, i); printf(" ");
 			gotoxy(2, i); printf(" ");
 		}
-
 		set_color(60); // 파란색 테두리
-
 		for (i = 0; i < 80; i++) { // 시각적 요소
 			gotoxy(i, 23); printf(" ");
 		}
-
 		set_color(90);
 		gotoxy(2, 23); printf(" ");
 		gotoxy(3, 23); printf(" ");
@@ -269,6 +300,9 @@ int HomePrinter(void)
 	else
 	{
 		system("cls");
+		soundplayer(2, 1);
+		Sleep(2000);
+		soundplayer(2, 0);
 		exit(0); //종료 
 	}
 }
@@ -431,7 +465,7 @@ int Check(char* Check)
 }
 
 int main(int argc,char *argv[]){
-	
+	srand(time(NULL));
 	char a[50];
 	char check_char = 0;
 	char b = 0;
