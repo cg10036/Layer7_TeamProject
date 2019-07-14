@@ -7,6 +7,8 @@
 #include <oleauto.h>
 #include <conio.h>
 #include <time.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 // 0 :: 검정색 
 // 7 :: 흰색
