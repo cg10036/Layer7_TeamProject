@@ -426,10 +426,11 @@ int main(int argc,char *argv[]){
 			scanf("%s", a);
 			if (clock()-e >= 10*1000)
 			{
-				gotoxy(0, 0);
+				gotoxy(46, 1);
 				printf("%3d분 %3d초", m, (clock() - q) / 1000);
-				gotoxy(0, 5);
+				gotoxy(23, 1);
 				printf("0초 남음");
+				gotoxy(22, 13);
 				printf("Time over!\n");
 				return 0;
 			}
@@ -444,16 +445,20 @@ int main(int argc,char *argv[]){
 			}
 			if (!Check(a) || !(check_char == '\0' || a[0] == check_char) || strlen(a) <= 1 || b)
 			{
+				gotoxy(22, 13);
 				printf("GAMEOVER\n");
 				return; //GAMEOVER
 			}
 			strcpy(usedString[usedStringCnt++], a);
 			if (!Find(a[strlen(a) - 1], a))
 			{
+				gotoxy(22, 13);
 				printf("YOUWIN\n");
 				return; //YOUWIN
 			}
+			
 			//region Tiny-Print-Fix by leesoohyuk
+			gotoxy(22, 8);
 			printf("COM : %s\n", a);
 			//endregion
 			check_char = a[strlen(a) - 1];
@@ -461,10 +466,11 @@ int main(int argc,char *argv[]){
 			w = clock();
 			e = clock();
 			//endregion
+			check_char = a[strlen(a) - 1];
 		}
 		else
 		{
-			gotoxy(0, 0);
+			gotoxy(46, 1);
 			printf("%3d분 %3d초", m, (clock() - q) / 1000);
 	
 			if ((clock() - q) / 1000 == 60 && on[0] != 1) {
@@ -473,19 +479,22 @@ int main(int argc,char *argv[]){
 				on[0] = 1;
 			}
 			else if ((clock() - q) / 1000 == 0) on[0] = 0;
-			gotoxy(0, 5);
+			gotoxy(23, 1);
 			//Tiny-Print-Fix by leesoohyuk
-			printf("%3d초 남음\ninput :             \b\b\b\b\b\b\b\b\b\b\b\b", 10 - (clock() - w) / 1000); 
+			printf("%3d초 남음\n", 10 - (clock() - w) / 1000);
+			gotoxy(22, 4);
+			printf("input :             \b\b\b\b\b\b\b\b\b\b\b\b");
 			//endregion
+	
 			if (10 - (clock() - w) / 1000 == 0 && on[1] != 1) {
 				if (cnt == 1) {
-					gotoxy(2, 6);
+					gotoxy(22, 13);
 					printf("Time over!");
 					cnt++;
 					break;
 				}
 				else {
-					gotoxy(2, 6);
+					gotoxy(22, 13);
 					printf("Time over! * %d", cnt);
 					cnt++;
 					break;
