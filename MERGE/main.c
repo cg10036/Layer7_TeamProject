@@ -424,17 +424,7 @@ int main(int argc,char *argv[]){
 		if (_kbhit())
 		{
 			scanf("%s", a);
-			if (clock()-e >= 10*1000)
-			{
-				gotoxy(46, 1);
-				printf("%3d분 %3d초", m, (clock() - q) / 1000);
-				gotoxy(23, 1);
-				printf("0초 남음");
-				gotoxy(22, 13);
-				printf("Time over!\n");
-				return 0;
-			}
- 			printf("\n");
+			printf("\n");
 			for (i = 0;i < usedStringCnt;i++)
 			{
 				if (!strcmp(a, usedString[i]))
@@ -446,14 +436,18 @@ int main(int argc,char *argv[]){
 			if (!Check(a) || !(check_char == '\0' || a[0] == check_char) || strlen(a) <= 1 || b)
 			{
 				gotoxy(22, 13);
+				set_color(4);
 				printf("GAMEOVER\n");
+				set_color(7);
 				return; //GAMEOVER
 			}
 			strcpy(usedString[usedStringCnt++], a);
 			if (!Find(a[strlen(a) - 1], a))
 			{
 				gotoxy(22, 13);
+				set_color(2);
 				printf("YOUWIN\n");
+				set_color(7);
 				return; //YOUWIN
 			}
 			
@@ -489,13 +483,17 @@ int main(int argc,char *argv[]){
 			if (10 - (clock() - w) / 1000 == 0 && on[1] != 1) {
 				if (cnt == 1) {
 					gotoxy(22, 13);
+					set_color(4);
 					printf("Time over!");
+					set_color(7);
 					cnt++;
 					break;
 				}
 				else {
 					gotoxy(22, 13);
+					set_color(4);
 					printf("Time over! * %d", cnt);
+					set_color(7);
 					cnt++;
 					break;
 				}
