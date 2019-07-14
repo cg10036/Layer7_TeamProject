@@ -8,9 +8,14 @@
 #include <conio.h>
 #include <time.h>
 
-// 128 :: 단어들 색
-// 109 :: 타이머 색
+// 0 :: 검정색 
 // 7 :: 흰색
+// 96 :: 타이머 배경, 검정색 
+// 100 :: 타이머 배경, 빨간색 
+// 109 :: 타이머 색
+// 114 :: 회색 배경, 초록색 
+// 124 :: 회색 배경, 빨간색 
+// 128 :: 단어들 색
 
 char usedString[300][50];
 int usedStringCnt = 0;
@@ -435,24 +440,25 @@ int main(int argc,char *argv[]){
 			}
 			if (!Check(a) || !(check_char == '\0' || a[0] == check_char) || strlen(a) <= 1 || b)
 			{
-				gotoxy(22, 13);
-				set_color(4);
+				gotoxy(35, 13);
+				set_color(124);
 				printf("GAMEOVER\n");
-				set_color(7);
+				set_color(0);
 				return; //GAMEOVER
 			}
 			strcpy(usedString[usedStringCnt++], a);
 			if (!Find(a[strlen(a) - 1], a))
 			{
-				gotoxy(22, 13);
-				set_color(2);
+				gotoxy(35, 13);
+				set_color(114);
 				printf("YOUWIN\n");
-				set_color(7);
+				set_color(0);
 				return; //YOUWIN
 			}
 			
 			//region Tiny-Print-Fix by leesoohyuk
 			gotoxy(22, 8);
+			set_color(112);
 			printf("COM : %s\n", a);
 			//endregion
 			check_char = a[strlen(a) - 1];
@@ -465,6 +471,7 @@ int main(int argc,char *argv[]){
 		else
 		{
 			gotoxy(46, 1);
+			set_color(96);
 			printf("%3d분 %3d초", m, (clock() - q) / 1000);
 	
 			if ((clock() - q) / 1000 == 60 && on[0] != 1) {
@@ -473,27 +480,29 @@ int main(int argc,char *argv[]){
 				on[0] = 1;
 			}
 			else if ((clock() - q) / 1000 == 0) on[0] = 0;
-			gotoxy(23, 1);
+			gotoxy(21, 1);
+			set_color(100); printf("%3d", 10 - (clock() - w) / 1000);
 			//Tiny-Print-Fix by leesoohyuk
-			printf("%3d초 남음\n", 10 - (clock() - w) / 1000);
+			set_color(96); printf("초 남음\n");
 			gotoxy(22, 4);
+			set_color(112);
 			printf("input :             \b\b\b\b\b\b\b\b\b\b\b\b");
 			//endregion
 	
 			if (10 - (clock() - w) / 1000 == 0 && on[1] != 1) {
 				if (cnt == 1) {
-					gotoxy(22, 13);
-					set_color(4);
+					gotoxy(35, 13);
+					set_color(124);
 					printf("Time over!");
-					set_color(7);
+					set_color(0);
 					cnt++;
 					break;
 				}
 				else {
-					gotoxy(22, 13);
-					set_color(4);
+					gotoxy(35, 13);
+					set_color(124);
 					printf("Time over! * %d", cnt);
-					set_color(7);
+					set_color(0);
 					cnt++;
 					break;
 				}
