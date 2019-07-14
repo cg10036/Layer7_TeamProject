@@ -414,6 +414,11 @@ int main(int argc,char *argv[]){
 	HomePrinter();
 	system("cls"); // 화면 초기화
 	title();
+	//region Tiny-Bug-fix by leesoohyuk
+	q = clock();
+	w = clock();
+	e = clock();
+	//endregion
 	while (1)
 	{
 		if (_kbhit())
@@ -448,8 +453,14 @@ int main(int argc,char *argv[]){
 				printf("YOUWIN\n");
 				return; //YOUWIN
 			}
-			printf("%s\n", a);
+			//region Tiny-Print-Fix by leesoohyuk
+			printf("COM : %s\n", a);
+			//endregion
 			check_char = a[strlen(a) - 1];
+			//region Tiny-Bug-Fix by leesoohyuk
+			w = clock();
+			e = clock();
+			//endregion
 		}
 		else
 		{
@@ -463,8 +474,9 @@ int main(int argc,char *argv[]){
 			}
 			else if ((clock() - q) / 1000 == 0) on[0] = 0;
 			gotoxy(0, 5);
-			printf("%3d초 남음", 10 - (clock() - w) / 1000);
-	
+			//Tiny-Print-Fix by leesoohyuk
+			printf("%3d초 남음\ninput :             \b\b\b\b\b\b\b\b\b\b\b\b", 10 - (clock() - w) / 1000); 
+			//endregion
 			if (10 - (clock() - w) / 1000 == 0 && on[1] != 1) {
 				if (cnt == 1) {
 					gotoxy(2, 6);
