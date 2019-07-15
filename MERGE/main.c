@@ -498,6 +498,9 @@ int main(int argc,char *argv[]){
 	rnd = 1;
 	rtm = 0;
 	
+	memset(usedString, 0, sizeof(usedString));
+	usedStringCnt = 0;
+	
 	system("mode con cols=80 lines=25"); //처음 크기 조정 
 	HomePrinter();
 	system("cls"); // 화면 초기화
