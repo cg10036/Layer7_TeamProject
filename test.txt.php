@@ -1,3 +1,3 @@
 <?php
-readfile("./flag.php");
+echo "hi";
 ?>
